@@ -1,0 +1,562 @@
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ghatan &amp; Siti - Pernikahan 2029</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8b0000",
+                        "burgundy": "#800020",
+                        "off-white": "#FDFCFB",
+                        "background-light": "#FDFCFB",
+                        "background-dark": "#120808",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    },
+                    boxShadow: {
+                        'premium': '0 10px 40px -10px rgba(139, 0, 0, 0.1)',
+                        'card': '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)',
+                    },
+                    animation: {
+                        'float': 'floating 3s ease-in-out infinite',
+                        'pulse-gentle': 'pulse-gentle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-up': 'fade-up 0.8s ease-out forwards',
+                        'petal-fall-1': 'petal-fall 10s linear infinite',
+                        'petal-fall-2': 'petal-fall 14s linear infinite',
+                        'petal-fall-3': 'petal-fall 18s linear infinite',
+                        'music-bar': 'music-bar 1s ease-in-out infinite alternate',
+                        'music-note': 'music-note 3s linear infinite',
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .placeholder-label {
+                @apply absolute inset-0 flex items-center justify-center bg-black/20 text-white font-medium text-sm backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300;
+            }
+            @keyframes floating {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+                100% { transform: translateY(0px); }
+            }
+            @keyframes pulse-gentle {
+                0%, 100% { opacity: 1; transform: scale(1); }
+                50% { opacity: .8; transform: scale(1.05); }
+            }
+            @keyframes fade-up {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes petal-fall {
+                0% {
+                    transform: translateY(-10vh) translateX(0) rotate(0deg);
+                    opacity: 0;
+                }
+                10% { opacity: 0.4; }
+                90% { opacity: 0.4; }
+                100% {
+                    transform: translateY(110vh) translateX(100px) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+            @keyframes music-bar {
+                0% { height: 4px; }
+                100% { height: 16px; }
+            }
+            @keyframes music-note {
+                0% { transform: translateY(0) translateX(0) scale(0.5); opacity: 0; }
+                20% { opacity: 1; }
+                100% { transform: translateY(-40px) translateX(20px) scale(1.2) rotate(20deg); opacity: 0; }
+            }
+            .reveal {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.8s ease-out;
+            }
+            .reveal.active {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .petal {
+                position: fixed;
+                top: -50px;
+                pointer-events: none;
+                z-index: 40;
+                color: #8b0000;
+                opacity: 0;
+            }
+            input[type=range]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                height: 12px;
+                width: 12px;
+                border-radius: 50%;
+                background: #8b0000;
+                cursor: pointer;
+                border: 2px solid white;
+                box-shadow: 0 0 2px rgba(0,0,0,0.2);
+            }
+            #music-toggle:checked ~ #audio-player-ui .visualizer-bar {
+                animation-play-state: running;
+            }
+            #music-toggle:not(:checked) ~ #audio-player-ui .visualizer-bar {
+                animation-play-state: paused;
+                height: 4px !important;
+            }
+            #music-toggle:checked ~ #audio-player-ui .floating-note {
+                display: block;
+            }
+            #music-toggle:not(:checked) ~ #audio-player-ui .floating-note {
+                display: none;
+            }
+            #music-toggle:checked ~ #audio-player-ui .pause-icon {
+                display: block;
+            }
+            #music-toggle:checked ~ #audio-player-ui .play-icon {
+                display: none;
+            }
+            #music-toggle:not(:checked) ~ #audio-player-ui .pause-icon {
+                display: none;
+            }
+            #music-toggle:not(:checked) ~ #audio-player-ui .play-icon {
+                display: block;
+            }
+            #music-toggle:checked ~ #autoplay-prompt {
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(20px);
+            }
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        #rsvp-success-trigger:checked ~ #rsvp-modal {
+            display: flex;
+        }
+        #story-modal-trigger:checked ~ #story-modal {
+            display: flex;
+        }
+    </style>
+</head>
+<body class="bg-off-white dark:bg-background-dark font-display text-slate-800 dark:text-slate-100 antialiased overflow-x-hidden">
+<div class="fixed inset-0 pointer-events-none overflow-hidden z-40">
+<span class="material-symbols-outlined petal animate-petal-fall-1 left-[10%] opacity-20 text-xl">eco</span>
+<span class="material-symbols-outlined petal animate-petal-fall-2 left-[25%] opacity-10 text-2xl" style="animation-delay: 2s;">eco</span>
+<span class="material-symbols-outlined petal animate-petal-fall-3 left-[40%] opacity-25 text-lg" style="animation-delay: 5s;">eco</span>
+<span class="material-symbols-outlined petal animate-petal-fall-1 left-[60%] opacity-15 text-xl" style="animation-delay: 1s;">eco</span>
+<span class="material-symbols-outlined petal animate-petal-fall-2 left-[75%] opacity-20 text-2xl" style="animation-delay: 4s;">eco</span>
+<span class="material-symbols-outlined petal animate-petal-fall-3 left-[90%] opacity-10 text-lg" style="animation-delay: 7s;">eco</span>
+<span class="material-symbols-outlined petal animate-petal-fall-1 left-[15%] opacity-25 text-xl" style="animation-delay: 8s;">eco</span>
+<span class="material-symbols-outlined petal animate-petal-fall-2 left-[85%] opacity-15 text-2xl" style="animation-delay: 3s;">eco</span>
+</div>
+<div class="relative flex min-h-screen w-full flex-col">
+<header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-5 transition-all duration-300 bg-white/70 dark:bg-background-dark/70 backdrop-blur-xl border-b border-primary/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl fill-1">favorite</span>
+<span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white font-serif">G &amp; S</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors text-slate-500 dark:text-slate-400" href="#story">Cerita Kami</a>
+<a class="text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors text-slate-500 dark:text-slate-400" href="#details">Acara</a>
+<a class="text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors text-slate-500 dark:text-slate-400" href="#rsvp">Kehadiran</a>
+<a class="text-xs font-bold uppercase tracking-widest hover:text-primary transition-colors text-slate-500 dark:text-slate-400" href="#gift">Kado</a>
+</nav>
+<div class="flex items-center gap-4">
+<a class="animate-float bg-primary hover:bg-burgundy text-white text-xs font-extrabold uppercase tracking-widest py-3 px-8 rounded-full transition-all shadow-xl shadow-primary/20 flex items-center gap-2" href="#rsvp">
+<span class="material-symbols-outlined text-sm">mail</span>
+<span>RSVP</span>
+</a>
+</div>
+</header>
+<main class="flex-grow pt-24">
+<section class="relative min-h-[90vh] flex flex-col md:flex-row w-full p-4 md:p-12 gap-8 lg:gap-16 items-center">
+<div class="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left z-10 space-y-8">
+<div class="reveal active inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 text-primary text-[10px] font-extrabold uppercase tracking-[0.2em] border border-primary/10">
+<span class="material-symbols-outlined text-xs">auto_awesome</span>
+                    Simpan Tanggalnya
+                </div>
+<h1 class="reveal active font-serif text-6xl md:text-8xl lg:text-[100px] text-slate-900 dark:text-white leading-[0.95] font-light">
+                    Ghatan <br class="hidden md:block"/><span class="text-primary italic font-normal">&amp;</span> Siti
+                </h1>
+<div class="reveal active flex flex-col md:flex-row items-center gap-6 text-slate-500 dark:text-slate-400 font-medium tracking-wide text-sm md:text-base border-l-0 md:border-l-2 border-primary/20 md:pl-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">calendar_month</span>
+<span class="font-serif italic text-lg text-slate-700 dark:text-slate-200">4 Februari 2029</span>
+</div>
+<div class="hidden md:block w-1.5 h-1.5 rounded-full bg-primary/20"></div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">location_on</span>
+<span class="font-serif italic text-lg text-slate-700 dark:text-slate-200">Surabaya, Indonesia</span>
+</div>
+</div>
+<div class="reveal active grid grid-cols-4 gap-4 w-full max-w-lg mt-4">
+<div class="flex flex-col items-center p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-premium border border-primary/5 transition-all duration-300 hover:shadow-2xl">
+<span class="text-3xl md:text-4xl font-light text-primary font-serif mb-1" id="days">0</span>
+<span class="text-[8px] md:text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">Hari</span>
+</div>
+<div class="flex flex-col items-center p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-premium border border-primary/5 transition-all duration-300 hover:shadow-2xl">
+<span class="text-3xl md:text-4xl font-light text-primary font-serif mb-1" id="hours">0</span>
+<span class="text-[8px] md:text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">Jam</span>
+</div>
+<div class="flex flex-col items-center p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-premium border border-primary/5 transition-all duration-300 hover:shadow-2xl">
+<span class="text-3xl md:text-4xl font-light text-primary font-serif mb-1" id="mins">0</span>
+<span class="text-[8px] md:text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">Menit</span>
+</div>
+<div class="flex flex-col items-center p-5 rounded-3xl bg-white dark:bg-slate-900 shadow-premium border border-primary/5 transition-all duration-300 hover:shadow-2xl">
+<span class="text-3xl md:text-4xl font-light text-primary font-serif mb-1" id="secs">0</span>
+<span class="text-[8px] md:text-[10px] uppercase tracking-[0.2em] text-slate-400 font-bold">Detik</span>
+</div>
+</div>
+<div class="reveal active flex flex-col sm:flex-row gap-5 w-full sm:w-auto pt-6">
+<a class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 font-bold py-4 px-10 rounded-full transition-all shadow-xl flex items-center justify-center gap-2 text-sm tracking-widest uppercase" href="#details">
+<span>Detail Acara</span>
+<span class="material-symbols-outlined text-sm">arrow_outward</span>
+</a>
+<a class="bg-transparent border-2 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white hover:border-primary/50 font-bold py-4 px-10 rounded-full transition-all flex items-center justify-center gap-2 text-sm tracking-widest uppercase" href="#story">
+<span>Cerita Kami</span>
+</a>
+</div>
+</div>
+<div class="reveal active flex-1 relative w-full h-[500px] md:h-[700px] rounded-[40px] overflow-hidden shadow-2xl group border-[12px] border-white dark:border-slate-900">
+<img alt="Ghatan &amp; Siti" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 scale-100 group-hover:scale-105" src="asset/Gemini_Generated_Image_gzc6uggzc6uggzc6.png"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent opacity-60"></div>
+</div>
+</section>
+<section class="reveal py-32 px-6 bg-white dark:bg-slate-950" id="story">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col lg:flex-row gap-20 items-center">
+<div class="flex-1 grid grid-cols-2 gap-6 relative">
+<div class="space-y-6 pt-12">
+<div class="relative w-full h-80 overflow-hidden rounded-[32px] shadow-card group bg-slate-100">
+<img alt="Kencan Pertama" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" src="asset/Gemini_Generated_Image_o7nmbgo7nmbgo7nm.png"/>
+<div class="placeholder-label">Momen Pertama</div>
+</div>
+<div class="bg-primary/5 border border-primary/5 p-8 rounded-[32px] h-48 flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary/30 mb-3 text-3xl">celebration</span>
+<span class="font-serif text-3xl text-primary font-light italic">Sejak 2020</span>
+</div>
+</div>
+<div class="space-y-6">
+<div class="bg-primary text-white p-8 rounded-[32px] h-48 flex flex-col items-center justify-center text-center shadow-premium">
+<span class="material-symbols-outlined text-4xl mb-2 fill-1">favorite</span>
+<span class="text-[10px] font-bold uppercase tracking-[0.2em]">Our Love</span>
+</div>
+<div class="relative w-full h-80 overflow-hidden rounded-[32px] shadow-card group bg-slate-100">
+<img alt="Perjalanan Kami" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4p0bkN4sQ6lntjrWykP7peOhneAtqCPbbknqJCvn64Nb4mtKIWHEz6meUBbugqbLYUTxB6uHhKRetEmEb7z8AS_TGOxTu_EUqMD-JeXZJoTuc7nc7gRwuySyaDHEdlB-ML1X-9SkMLyF6PnbDakdhW-UDX8GSK5gh1cCgnT6YSlQjorceOZS-ilY8pedIIUY83wl6VktEa8netQU4dK4ah6MW83hd1gDvJL8suCqteDdN6C5Cog63-OojuPOIOOlV9GQsl_ecWAU"/>
+<div class="placeholder-label">Perjalanan Kami</div>
+</div>
+</div>
+</div>
+<div class="flex-1 space-y-8">
+<div class="space-y-2">
+<span class="text-primary text-[10px] font-extrabold uppercase tracking-[0.3em]">The Beginning</span>
+<h2 class="font-serif text-5xl md:text-6xl text-slate-900 dark:text-white leading-tight">Cerita Cinta <br/> Kami</h2>
+</div>
+<p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed font-light">
+                            Perjalanan yang dimulai dengan mimpi bersama dan sapaan sederhana. Dari jalanan Jakarta yang ramai hingga momen tenang yang mendefinisikan siapa kami, kami telah membangun kehidupan yang berakar pada tawa dan cinta.
+                        </p>
+<p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed font-light">
+                            Kini, saat kami bersiap untuk mengucapkan janji suci, kami sangat bersyukur memiliki Anda di sisi kami untuk menyaksikan awal dari selamanya di Surabaya.
+                        </p>
+<div class="pt-4">
+<input class="hidden" id="story-modal-trigger" type="checkbox"/>
+<label class="inline-flex items-center gap-4 text-primary font-bold hover:text-burgundy group cursor-pointer text-sm uppercase tracking-widest transition-all" for="story-modal-trigger">
+<span>Selengkapnya</span>
+<div class="w-10 h-10 rounded-full border border-primary/20 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</label>
+<div class="hidden fixed inset-0 z-[100] items-center justify-center p-6 bg-slate-950/80 backdrop-blur-md" id="story-modal">
+<div class="bg-white dark:bg-slate-900 w-full max-w-2xl p-10 md:p-16 rounded-[40px] shadow-2xl relative max-h-[85vh] overflow-y-auto border border-white/10">
+<label class="absolute top-8 right-8 cursor-pointer text-slate-400 hover:text-primary transition-colors" for="story-modal-trigger">
+<span class="material-symbols-outlined text-3xl">close</span>
+</label>
+<h3 class="font-serif text-4xl text-slate-900 dark:text-white mb-8">Kisah Kami</h3>
+<div class="space-y-6 text-slate-600 dark:text-slate-400 leading-relaxed text-lg font-light">
+<p>Kisah ini berawal di tahun 2020, saat takdir mempertemukan kami di sebuah perpustakaan kota. Sapaan sederhana yang kemudian berubah menjadi diskusi panjang tentang buku dan mimpi masa depan.</p>
+<p>Tahun demi tahun kami lewati dengan penuh warna. Menghadapi tantangan bersama, merayakan kemenangan kecil, dan selalu menemukan jalan untuk kembali ke satu sama lain. Setiap tawa yang kami bagi menjadi pondasi kuat hubungan kami.</p>
+<p>Ghatan melamar Siti di bawah rintik hujan Surabaya yang syahdu, sebuah momen yang tak akan pernah kami lupakan. Dan kini, kami mengundang Anda untuk menjadi bagian dari babak baru dalam hidup kami.</p>
+</div>
+<div class="mt-12 pt-8 border-t border-slate-100 dark:border-slate-800">
+<p class="font-serif italic text-2xl text-primary font-light">"Cinta bukanlah tentang menemukan seseorang untuk hidup bersama, tapi menemukan seseorang yang Anda tidak bisa hidup tanpanya."</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="reveal py-32 px-6 bg-off-white dark:bg-background-dark" id="details">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-20 space-y-4">
+<span class="text-primary text-[10px] font-extrabold uppercase tracking-[0.3em]">The Celebration</span>
+<h2 class="font-serif text-5xl md:text-6xl text-slate-900 dark:text-white">Acara Pernikahan</h2>
+<p class="text-slate-500 dark:text-slate-400 italic font-serif text-xl">Rincian hari bahagia kami</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+<div class="bg-white dark:bg-slate-900 p-10 md:p-16 rounded-[40px] shadow-premium border border-primary/5 flex flex-col justify-center space-y-12">
+<div class="space-y-10">
+<div class="relative pl-8 border-l-2 border-primary/20">
+<div class="absolute -left-[11px] top-0 w-5 h-5 bg-white dark:bg-slate-900 border-2 border-primary rounded-full"></div>
+<h3 class="font-serif text-3xl text-primary mb-6">Akad &amp; Resepsi</h3>
+<div class="space-y-4 text-slate-600 dark:text-slate-300">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary/60">calendar_today</span>
+<p class="font-bold tracking-wide">Minggu, 4 Februari 2029</p>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary/60">schedule</span>
+<div class="text-sm space-y-1">
+<p><span class="opacity-60">Akad:</span> 10:00 — 11:30 WIB</p>
+<p><span class="opacity-60">Resepsi:</span> 12:30 — 15:00 WIB</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative pl-8 border-l-2 border-primary/20">
+<div class="absolute -left-[11px] top-0 w-5 h-5 bg-white dark:bg-slate-900 border-2 border-primary rounded-full"></div>
+<h3 class="font-serif text-3xl text-primary mb-6">Lokasi</h3>
+<div class="space-y-4 text-slate-600 dark:text-slate-300">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-primary/60">location_on</span>
+<div>
+<p class="font-bold tracking-wide">Grand Pakuwon Ballroom</p>
+<p class="text-sm opacity-70 leading-relaxed mt-1">Jl. Grand Pakuwon, Banjar Sugihan, Tandes<br/>Surabaya, Jawa Timur 60184</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<a class="inline-flex items-center gap-3 bg-primary text-white font-bold py-4 px-10 rounded-full hover:bg-burgundy transition-all shadow-xl shadow-primary/20 w-fit text-sm uppercase tracking-widest" href="https://maps.google.com" target="_blank">
+<span class="material-symbols-outlined text-sm">explore</span>
+                            Petunjuk Lokasi
+                        </a>
+</div>
+<div class="h-[500px] lg:h-auto rounded-[40px] overflow-hidden shadow-premium border-8 border-white dark:border-slate-900 group">
+<iframe allowfullscreen="" class="grayscale group-hover:grayscale-0 transition-all duration-1000" height="100%" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.9620583733075!2d112.6565555!3d-7.2451389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f950668b5555%3A0x6a15264b3017a80b!2sGrand%20Pakuwon!5e0!3m2!1sen!2sid!4v1715850000000!5m2!1sen!2sid" style="border:0;" width="100%"></iframe>
+</div>
+</div>
+</div>
+</section>
+<section class="reveal py-32 px-6 bg-white dark:bg-slate-950" id="rsvp">
+<div class="max-w-xl mx-auto text-center relative">
+<div class="space-y-4 mb-16">
+<span class="text-primary text-[10px] font-extrabold uppercase tracking-[0.3em]">RSVP</span>
+<h2 class="font-serif text-5xl text-slate-900 dark:text-white leading-tight">Apakah Anda <br/> Akan Hadir?</h2>
+<p class="text-slate-500 dark:text-slate-400 italic font-serif text-lg">Kehadiran Anda adalah kado paling istimewa</p>
+</div>
+<input class="hidden peer" id="rsvp-success-trigger" type="checkbox"/>
+<form class="space-y-8 text-left bg-off-white dark:bg-slate-900 p-8 md:p-12 rounded-[40px] shadow-card border border-primary/5 peer-checked:opacity-10 peer-checked:pointer-events-none transition-all duration-500">
+<div class="grid grid-cols-1 gap-8">
+<div>
+<label class="block text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400 mb-3">Nama Lengkap</label>
+<input class="w-full bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Masukkan nama Anda" type="text"/>
+</div>
+</div>
+<div>
+<label class="block text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400 mb-3">Status Kehadiran</label>
+<select class="w-full bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none appearance-none">
+<option>Ya, Saya Akan Hadir</option>
+<option>Maaf, Berhalangan Hadir</option>
+</select>
+</div>
+<div>
+<label class="block text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400 mb-3">Jumlah Tamu</label>
+<select class="w-full bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+<option>1 Orang</option>
+<option>2 Orang</option>
+</select>
+</div>
+<label class="block w-full text-center bg-primary hover:bg-burgundy text-white font-extrabold py-5 rounded-2xl transition-all shadow-xl shadow-primary/20 cursor-pointer text-sm uppercase tracking-[0.2em] animate-float" for="rsvp-success-trigger">
+                        Kirim Konfirmasi
+                    </label>
+</form>
+<div class="hidden absolute inset-0 flex items-center justify-center z-20" id="rsvp-modal">
+<div class="bg-white dark:bg-slate-900 p-12 rounded-[40px] shadow-2xl border border-primary/10 animate-fade-up w-full space-y-6">
+<div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+<span class="material-symbols-outlined text-5xl text-primary fill-1">verified_user</span>
+</div>
+<h3 class="font-serif text-3xl text-slate-900 dark:text-white">Terima Kasih!</h3>
+<p class="text-slate-500 dark:text-slate-400 font-light text-lg">Konfirmasi Anda telah kami catat. Sampai jumpa di hari bahagia kami!</p>
+<label class="inline-block text-primary font-bold hover:underline cursor-pointer pt-4 uppercase text-xs tracking-widest" for="rsvp-success-trigger">Ubah Jawaban</label>
+</div>
+</div>
+</div>
+</section>
+<section class="reveal py-32 px-6 bg-off-white dark:bg-background-dark" id="gift">
+<div class="max-w-6xl mx-auto">
+<div class="text-center mb-20 space-y-4">
+<span class="text-primary text-[10px] font-extrabold uppercase tracking-[0.3em]">Wedding Gift</span>
+<h2 class="font-serif text-5xl md:text-6xl text-slate-900 dark:text-white">Kado Pernikahan</h2>
+<p class="text-slate-500 dark:text-slate-400 italic font-serif text-lg max-w-2xl mx-auto leading-relaxed">Tanpa mengurangi rasa hormat, bagi Anda yang ingin memberikan tanda kasih, dapat melalui opsi di bawah ini:</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-white dark:bg-slate-900 p-10 rounded-[40px] shadow-premium border border-primary/5 flex flex-col items-center text-center transition-all hover:-translate-y-3 group">
+<div class="w-20 h-20 bg-primary/5 rounded-[24px] flex items-center justify-center mb-8 group-hover:bg-primary group-hover:text-white transition-colors duration-500">
+<span class="material-symbols-outlined text-4xl">account_balance_wallet</span>
+</div>
+<h3 class="font-bold text-xl text-slate-900 dark:text-white mb-2">Transfer Bank</h3>
+<p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold mb-6">BCA Digital</p>
+<div class="bg-off-white dark:bg-slate-800/50 px-6 py-4 rounded-2xl border border-slate-100 dark:border-slate-700 w-full mb-6 relative overflow-hidden">
+<span class="font-mono text-xl font-bold text-primary tracking-widest block" id="acc-bca">1234 567 890</span>
+<button class="mt-4 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-primary flex items-center justify-center gap-2 w-full transition-colors" onclick="navigator.clipboard.writeText('1234567890')">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+                                Salin Nomor
+                            </button>
+</div>
+<p class="font-serif italic text-lg text-slate-700 dark:text-slate-300">a.n Ghatan Syah</p>
+</div>
+<div class="bg-white dark:bg-slate-900 p-10 rounded-[40px] shadow-premium border border-primary/5 flex flex-col items-center text-center transition-all hover:-translate-y-3 group">
+<div class="w-20 h-20 bg-primary/5 rounded-[24px] flex items-center justify-center mb-8 group-hover:bg-primary group-hover:text-white transition-colors duration-500">
+<span class="material-symbols-outlined text-4xl">payments</span>
+</div>
+<h3 class="font-bold text-xl text-slate-900 dark:text-white mb-2">E-Wallet</h3>
+<p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold mb-6">DANA / OVO</p>
+<div class="bg-off-white dark:bg-slate-800/50 px-6 py-4 rounded-2xl border border-slate-100 dark:border-slate-700 w-full mb-6 relative">
+<span class="font-mono text-xl font-bold text-primary tracking-widest block">0812 3456 789</span>
+<button class="mt-4 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-primary flex items-center justify-center gap-2 w-full transition-colors" onclick="navigator.clipboard.writeText('08123456789')">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+                                Salin Nomor
+                            </button>
+</div>
+<p class="font-serif italic text-lg text-slate-700 dark:text-slate-300">a.n Siti Aminah</p>
+</div>
+<div class="bg-white dark:bg-slate-900 p-10 rounded-[40px] shadow-premium border border-primary/5 flex flex-col items-center text-center transition-all hover:-translate-y-3 group">
+<div class="w-20 h-20 bg-primary/5 rounded-[24px] flex items-center justify-center mb-8 group-hover:bg-primary group-hover:text-white transition-colors duration-500">
+<span class="material-symbols-outlined text-4xl">local_shipping</span>
+</div>
+<h3 class="font-bold text-xl text-slate-900 dark:text-white mb-2">Kirim Fisik</h3>
+<p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold mb-6">Alamat Rumah</p>
+<div class="bg-off-white dark:bg-slate-800/50 px-6 py-4 rounded-2xl border border-slate-100 dark:border-slate-700 w-full mb-6 relative">
+<p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-light min-h-[60px]">Jl. Grand Pakuwon No. 12, Surabaya</p>
+<button class="mt-4 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 hover:text-primary flex items-center justify-center gap-2 w-full transition-colors" onclick="navigator.clipboard.writeText('Jl. Grand Pakuwon No. 12, Surabaya')">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+                                Salin Alamat
+                            </button>
+</div>
+<p class="font-serif italic text-lg text-slate-700 dark:text-slate-300">Penerima: Siti</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-white dark:bg-background-dark border-t border-slate-100 dark:border-slate-900 py-16">
+<div class="max-w-7xl mx-auto px-6 flex flex-col items-center justify-center gap-10">
+<div class="text-center space-y-4">
+<h2 class="text-4xl font-serif text-slate-900 dark:text-white italic">Ghatan &amp; Siti</h2>
+<p class="text-slate-400 text-sm uppercase tracking-[0.4em] font-light">Till Death Do Us Part</p>
+</div>
+<div class="flex gap-10">
+<a class="text-slate-300 hover:text-primary transition-colors duration-500" href="#">
+<span class="sr-only">Instagram</span>
+<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204 0.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
+</svg>
+</a>
+</div>
+<p class="text-slate-400 text-[10px] font-bold tracking-[0.2em] uppercase">© 2029 Ghatan &amp; Siti • Dibuat dengan cinta</p>
+</div>
+</footer>
+</div>
+<div class="fixed bottom-8 right-8 z-[70] flex flex-col items-end gap-4 pointer-events-none">
+<input class="hidden" id="music-toggle" type="checkbox"/>
+<audio id="background-audio" loop="">
+<source src="asset/Ed Sheeran - Perfect (Official Music Video) - Ed Sheeran.mp3" type="audio/mpeg"/>
+    </audio>
+<div class="pointer-events-auto transition-all duration-700 bg-white dark:bg-slate-900 border border-primary/20 shadow-premium p-4 rounded-2xl flex items-center gap-4 animate-fade-up max-w-[280px]" id="autoplay-prompt">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">music_note</span>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold text-slate-800 dark:text-white">Putar Musik Latar?</p>
+<p class="text-[10px] text-slate-500">Klik untuk memulai musik</p>
+</div>
+<label class="bg-primary hover:bg-burgundy text-white text-[10px] font-bold py-2 px-4 rounded-lg cursor-pointer transition-colors shadow-lg shadow-primary/20" for="music-toggle">
+            Putar
+        </label>
+</div>
+<div class="pointer-events-auto bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-primary/10 p-5 rounded-[32px] shadow-2xl w-[320px] transition-all hover:scale-[1.02] flex items-center gap-5 relative overflow-visible" id="audio-player-ui">
+<span class="floating-note material-symbols-outlined absolute -top-4 left-6 text-primary text-xl animate-music-note" style="animation-delay: 0s;">music_note</span>
+<span class="floating-note material-symbols-outlined absolute -top-2 left-10 text-primary/50 text-sm animate-music-note" style="animation-delay: 1s;">music_note</span>
+<label class="w-16 h-16 flex-shrink-0 bg-primary text-white rounded-full flex items-center justify-center shadow-xl shadow-primary/30 cursor-pointer active:scale-95 transition-all group overflow-hidden" for="music-toggle">
+<span class="play-icon material-symbols-outlined text-4xl">play_arrow</span>
+<span class="pause-icon material-symbols-outlined text-4xl hidden">pause</span>
+</label>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex flex-col mb-1">
+<span class="text-[11px] font-extrabold text-slate-900 dark:text-white truncate uppercase tracking-widest">Perfect - Ed Sheeran</span>
+<span class="text-[9px] text-primary/70 font-bold uppercase tracking-tighter"></span>
+</div>
+<div class="flex items-end gap-1 h-4 mb-3">
+<div class="visualizer-bar w-1 bg-primary rounded-full animate-music-bar" style="animation-delay: 0.1s;"></div>
+<div class="visualizer-bar w-1 bg-primary rounded-full animate-music-bar" style="animation-delay: 0.3s;"></div>
+<div class="visualizer-bar w-1 bg-primary rounded-full animate-music-bar" style="animation-delay: 0.5s;"></div>
+<div class="visualizer-bar w-1 bg-primary rounded-full animate-music-bar" style="animation-delay: 0.2s;"></div>
+<div class="visualizer-bar w-1 bg-primary rounded-full animate-music-bar" style="animation-delay: 0.4s;"></div>
+<div class="visualizer-bar w-1 bg-primary rounded-full animate-music-bar" style="animation-delay: 0.6s;"></div>
+<div class="visualizer-bar w-1 bg-primary rounded-full animate-music-bar" style="animation-delay: 0.1s;"></div>
+<div class="visualizer-bar w-1 bg-primary rounded-full animate-music-bar" style="animation-delay: 0.3s;"></div>
+</div>
+<div class="flex items-center gap-2 group/vol">
+<span class="material-symbols-outlined text-xs text-slate-400">volume_down</span>
+<input class="w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary" type="range" value="70"/>
+<span class="material-symbols-outlined text-xs text-slate-400">volume_up</span>
+</div>
+</div>
+<div class="absolute -top-12 right-0 bg-slate-900 text-white text-[9px] py-1.5 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap border border-white/10 flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px]">info</span>
+            Panduan Musik: Ganti file audio Anda di folder assets
+        </div>
+</div>
+<div class="pointer-events-auto text-[9px] font-bold text-slate-400 uppercase tracking-widest bg-white/50 dark:bg-slate-900/50 px-3 py-1 rounded-full border border-primary/5">
+        Panduan: Ganti file audio Anda di folder assets
+    </div>
+</div>
+<script>
+    const weddingDate = new Date("Feb 4, 2029 10:00:00").getTime();
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = weddingDate - now;
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        document.getElementById("days").innerText = days > 0 ? days : 0;
+        document.getElementById("hours").innerText = hours > 0 ? hours : 0;
+        document.getElementById("mins").innerText = minutes > 0 ? minutes : 0;
+        document.getElementById("secs").innerText = seconds > 0 ? seconds : 0;
+    }
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+    const audio = document.getElementById('background-audio');
+    const toggle = document.getElementById('music-toggle');
+    toggle.addEventListener('change', function() {
+        if(this.checked) {
+            audio.play().catch(() => {
+                console.log("Autoplay blocked. User interaction required.");
+            });
+        } else {
+            audio.pause();
+        }
+    });
+</script>
+
+</body></html>
